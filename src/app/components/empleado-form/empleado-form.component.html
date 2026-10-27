@@ -1,0 +1,68 @@
+<div class="card">
+    <div class="card-header bg-white">
+        <h5 class="mb-0 fw-semibold">
+            <i class="bi text-primary me-2" [ngClass]="formModel._id ? 'bi-pencil-square' : 'bi-person-plus-fill'"></i>
+            {{ formModel._id ? 'Editar Empleado' : 'Registro de Nuevo Empleado' }}
+        </h5>
+    </div>
+    <div class="card-body">
+        <form #empleadoForm="ngForm" (ngSubmit)="onSubmit(empleadoForm)" novalidate>
+            <div class="mb-3">
+                <label class="form-label small fw-medium">Nombre completo</label>
+                <input type="text" class="form-control" name="nombre" #nombre="ngModel"
+                    placeholder="Ej. Andrés Mendoza" required minlength="3"
+                    [class.is-invalid]="nombre.invalid && nombre.touched"
+                    [(ngModel)]="formModel.nombre">
+                <div class="invalid-feedback" *ngIf="nombre.invalid && nombre.touched">
+                    El nombre debe tener al menos 3 caracteres.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label small fw-medium">Cargo</label>
+                <input type="text" name="cargo" class="form-control" #cargo="ngModel"
+                    placeholder="Ej. Arquitecto de Software" required
+                    [class.is-invalid]="cargo.invalid && cargo.touched"
+                    [(ngModel)]="formModel.cargo">
+                <div class="invalid-feedback" *ngIf="cargo.invalid && cargo.touched">
+                    El cargo es obligatorio.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label small fw-medium">Departamento</label>
+                <input type="text" name="departamento" class="form-control" #departamento="ngModel"
+                    placeholder="Ej. Innovación" required
+                    [class.is-invalid]="departamento.invalid && departamento.touched"
+                    [(ngModel)]="formModel.departamento">
+                <div class="invalid-feedback" *ngIf="departamento.invalid && departamento.touched">
+                    El departamento es obligatorio.
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label small fw-medium">Sueldo</label>
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="number" name="sueldo" class="form-control" #sueldo="ngModel"
+                        placeholder="0.00" required min="0.01" step="0.01"
+                        [class.is-invalid]="sueldo.invalid && sueldo.touched"
+                        [(ngModel)]="formModel.sueldo">
+                </div>
+                <div class="invalid-feedback d-block" *ngIf="sueldo.invalid && sueldo.touched">
+                    El sueldo debe ser mayor a 0.
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary flex-fill" type="submit" [disabled]="empleadoForm.invalid">
+                    <i class="bi" [ngClass]="formModel._id ? 'bi-check2-circle' : 'bi-plus-circle'"></i>
+                    {{ formModel._id ? 'Actualizar' : 'Crear' }}
+                </button>
+                <button class="btn btn-outline-secondary" type="button" (click)="onCancelar(empleadoForm)">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
