@@ -7,9 +7,12 @@ import { EmpleadoComponent } from './components/empleado/empleado.component';
 import { EmpleadoFormComponent } from './components/empleado-form/empleado-form.component';
 import { EmpleadoListComponent } from './components/empleado-list/empleado-list.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { EmpleadoService } from './services/empleado.service';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { LoginDashboardComponent } from './features/auth/login-dashboard.component';
+import { LoginFormComponent } from './features/auth/components/login-form/login-form.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,9 @@ import { EmpleadoService } from './services/empleado.service';
     EmpleadoComponent,
     EmpleadoFormComponent,
     EmpleadoListComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    LoginDashboardComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +32,12 @@ import { EmpleadoService } from './services/empleado.service';
   ],
   providers: [
     provideClientHydration(),
-    EmpleadoService
+    EmpleadoService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true // Permite encadenar múltiples interceptores si fuera necesario
+    }
   ],
   bootstrap: [AppComponent]
 })
